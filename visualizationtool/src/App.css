@@ -1,0 +1,112 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#my_dataviz {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.bubbles {
+  stroke-width: 2px;
+  stroke: white;
+}
+
+.bubbles:hover {
+  stroke: black;
+}
+
+span svg {
+  height: 1em;
+  vertical-align: text-bottom;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0dbc1;
+  min-height: 100vh;
+}
+
+.legend-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 20px;
+  background-color: #f7f7f7;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+.axis-grid {
+  opacity: 0.1;
+}
+
+.x-axis-label {
+  font-size: auto;
+}
+
+.y-axis-label {
+  font-size: xx-small;
+}
+
+.card-container {
+  margin-top: 1%;
+  margin-bottom: 1%;
+  width: 85%;
+}
+
+.information-container {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #eee69d;
+}

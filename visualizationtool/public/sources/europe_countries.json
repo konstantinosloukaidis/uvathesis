@@ -1,0 +1,217 @@
+[
+    {
+        "country": "Andorra",
+        "code": "AD",
+        "available": false
+    },
+    {
+        "country": "Isle of Man",
+        "code": "IM",
+        "available": true
+    },
+    {
+        "country": "Norway",
+        "code": "NO",
+        "available": false
+    },
+    {
+        "country": "Liechtenstein",
+        "code": "LI",
+        "available": false
+    },
+    {
+        "country": "Switzerland",
+        "code": "CH",
+        "available": false
+    },
+    {
+        "country": "Macedonia",
+        "code": "MK",
+        "available": false
+    },
+    {
+        "country": "Netherlands",
+        "code": "NL",
+        "available": true
+    },
+    {
+        "country": "Slovenia",
+        "code": "SI",
+        "available": false
+    },
+    {
+        "country": "Albania",
+        "code": "AL",
+        "available": false
+    },
+    {
+        "country": "Ireland",
+        "code": "IE",
+        "available": false
+    },
+    {
+        "country": "Moldova",
+        "code": "MD",
+        "available": false
+    },
+    {
+        "country": "San Marino",
+        "code": "SM",
+        "available": false
+    },
+    {
+        "country": "Estonia",
+        "code": "EE",
+        "available": false
+    },
+    {
+        "country": "Faroe Islands",
+        "code": "FO",
+        "available": false
+    },
+    {
+        "country": "Austria",
+        "code": "AT",
+        "available": false
+    },
+    {
+        "country": "Belgium",
+        "code": "BE",
+        "available": false
+    },
+    {
+        "country": "Bosnia and Herzegovina",
+        "code": "BA",
+        "available": false
+    },
+    {
+        "country": "Montenegro",
+        "code": "ME",
+        "available": false
+    },
+    {
+        "country": "Bulgaria",
+        "code": "BG",
+        "available": false
+    },
+    {
+        "country": "Belarus",
+        "code": "BY",
+        "available": false
+    },
+    {
+        "country": "Croatia",
+        "code": "HR",
+        "available": false
+    },
+    {
+        "country": "Hungary",
+        "code": "HU",
+        "available": false
+    },
+    {
+        "country": "Czech Republic",
+        "code": "CZ",
+        "available": false
+    },
+    {
+        "country": "Denmark",
+        "code": "DK",
+        "available": false
+    },
+    {
+        "country": "Finland",
+        "code": "FI",
+        "available": false
+    },
+    {
+        "country": "France",
+        "code": "FR",
+        "available": false
+    },
+    {
+        "country": "Germany",
+        "code": "DE",
+        "available": false
+    },
+    {
+        "country": "Greece",
+        "code": "GR",
+        "available": false
+    },
+    {
+        "country": "Iceland",
+        "code": "IS",
+        "available": false
+    },
+    {
+        "country": "Latvia",
+        "code": "LV",
+        "available": false
+    },
+    {
+        "country": "Italy",
+        "code": "IT",
+        "available": false
+    },
+    {
+        "country": "Lithuania",
+        "code": "LT",
+        "available": false
+    },
+    {
+        "country": "Luxembourg",
+        "code": "LU",
+        "available": false
+    },
+    {
+        "country": "Monaco",
+        "code": "MC",
+        "available": false
+    },
+    {
+        "country": "Romania",
+        "code": "RO",
+        "available": false
+    },
+    {
+        "country": "Poland",
+        "code": "PL",
+        "available": false
+    },
+    {
+        "country": "Portugal",
+        "code": "PT",
+        "available": false
+    },
+    {
+        "country": "Slovakia",
+        "code": "SK",
+        "available": false
+    },
+    {
+        "country": "Spain",
+        "code": "ES",
+        "available": false
+    },
+    {
+        "country": "Sweden",
+        "code": "SE",
+        "available": false
+    },
+    {
+        "country": "Ukraine",
+        "code": "UA",
+        "available": false
+    },
+    {
+        "country": "United Kingdom",
+        "code": "GB",
+        "available": false
+    },
+    {
+        "country": "Serbia",
+        "code": "RS",
+        "available": false
+    }
+]
