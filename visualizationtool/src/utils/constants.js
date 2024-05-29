@@ -8,13 +8,14 @@ export const PERCENTAGE_VALUES_DOMAIN = [0.2, 0.4, 0.55, 0.7, 0.85, 0.95];
 export const PERCENTAGE_METRICS = ["completeness", "consistency", "currency"];
 export const FIVE_STAR_RATING_METRICS = ["accessibility", "retrieval"];
 
-export const NUMERIC_UNITS = ['T', 'THS_T', 'KM', 'NR', 'MIO_VKM', 'MIO_SKM', 'THS_PAS','THS_TRKM','THS_TRKM','THS','MIO_PKM', 'THS_VKM', 'PAS']
+export const NUMERIC_UNITS = ['T', 'THS_T', 'KM', 'NR', 'MIO_VKM', 'MIO_SKM', 'THS_PAS', 'THS_TRKM', 'THS_TRKM', 'THS', 'MIO_PKM', 'THS_VKM', 'PAS']
 export const PERCENTAGE_UNITS = []
 
 export const FREQUENCY_MAP = {
     "A": "Annual",
     "M": "Monthly",
     "Q": "Quarterly",
+    "U": "Undefined/Not specified"
 }
 
 export const UNIT_MAP = {
