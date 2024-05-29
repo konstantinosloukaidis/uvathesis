@@ -1,19 +1,19 @@
 import { PERCENTAGE_METRICS } from "./constants";
 
 export const fixHeatmapData = (originalData) => {
-    
+
     let data = [];
-    for (const pData of originalData){
+    for (const pData of originalData) {
         let originalKey = pData.file
         for (const key in pData) {
             if (key === 'file') continue;
-        
+
             const newDataPoint = {
                 group: originalKey,
                 variable: key,
                 value: pData[key]
             };
-        
+
             data.push(newDataPoint);
         }
     }
@@ -27,7 +27,7 @@ export const bubblePlotTransform = (data, xAxisVariable, yAxisVariable, zAxisVar
     data.forEach(item => {
         const xValue = item[xAxisVariable];
         const yValue = item[yAxisVariable];
-        
+
         Object.keys(item).forEach(key => {
             if (![xAxisVariable, yAxisVariable, 'file'].includes(key) && zAxisVariables.includes(key)) {
                 const isPercentage = PERCENTAGE_METRICS.includes(key);
@@ -90,57 +90,100 @@ const calculateMetrics = (data, startYear, endYear) => {
 
     startYear = parseInt(startYear);
     endYear = parseInt(endYear);
-    let diff = (endYear - startYear) * data.rows_per_dataset + data.rows_per_dataset;
+    let diff = (endYear - startYear) * data.values_per_period + data.values_per_period;
     if (data.frequency === 'M') {
         diff = diff * 12
     } else if (data.frequency === 'Q') {
         diff = diff * 4
     }
-    
+
     if (data.consistency && data.completeness) {
-        let totalCompletenessCells = 0;
-        let totalConsistencyCells = 0;
-    
-        const yearlyCompleteness = {};
-        const yearlyConsistency = {};
-    
-        // Normalize completeness data
-        for (let key in data.completeness) {
-            let year = normalizeYear(key);
-            if (!yearlyCompleteness[year]) {
-                yearlyCompleteness[year] = 0;
+        if (data.non_uniform_cells) {
+            let avg = data.values_per_period;
+            let totalCompletenessCells = 0;
+            let totalConsistencyCells = 0;
+            let totalCells = 0;
+
+            const yearlyCompleteness = {}
+            const yearlyConsistency = {}
+            const yearlyCells = {}
+
+            // Normalize completeness data
+            for (let key in data.completeness) {
+                let year = normalizeYear(key);
+                if (!yearlyCompleteness[year]) {
+                    yearlyCompleteness[year] = 0;
+                    yearlyCells[year] = 0;
+                }
+                yearlyCompleteness[year] += data.completeness[key].completeness_cells;
+                yearlyCells[year] += data.completeness[key].cells;
             }
-            yearlyCompleteness[year] += data.completeness[key].completeness_cells;
-        }
-    
-        // Normalize consistency data
-        for (let key in data.consistency) {
-            let year = normalizeYear(key);
-            if (!yearlyConsistency[year]) {
-                yearlyConsistency[year] = 0;
+
+            // Normalize consistency data
+            for (let key in data.consistency) {
+                let year = normalizeYear(key);
+                if (!yearlyConsistency[year]) {
+                    yearlyConsistency[year] = 0;
+                }
+                yearlyConsistency[year] += data.consistency[key].consistency_cells;
             }
-            yearlyConsistency[year] += data.consistency[key].consistency_cells;
+
+            for (let i = startYear; i <= endYear; i++) {
+                totalCompletenessCells += yearlyCompleteness[i] ? yearlyCompleteness[i] : 0;
+                totalConsistencyCells += yearlyConsistency[i] ? yearlyConsistency[i] : 0;
+                totalCells += yearlyCells[i] ? yearlyCells[i] : avg;
+            }
+
+            return {
+                completeness_percentage: totalCompletenessCells / totalCells,
+                consistency_percentage: totalConsistencyCells / totalCells
+            };
+
+        } else {
+            let totalCompletenessCells = 0;
+            let totalConsistencyCells = 0;
+
+            const yearlyCompleteness = {};
+            const yearlyConsistency = {};
+
+            // Normalize completeness data
+            for (let key in data.completeness) {
+                let year = normalizeYear(key);
+                if (!yearlyCompleteness[year]) {
+                    yearlyCompleteness[year] = 0;
+                }
+                yearlyCompleteness[year] += data.completeness[key].completeness_cells;
+            }
+
+            // Normalize consistency data
+            for (let key in data.consistency) {
+                let year = normalizeYear(key);
+                if (!yearlyConsistency[year]) {
+                    yearlyConsistency[year] = 0;
+                }
+                yearlyConsistency[year] += data.consistency[key].consistency_cells;
+            }
+
+            // Sum up the values for the specified range of years
+            for (let i = startYear; i <= endYear; i++) {
+                totalCompletenessCells += yearlyCompleteness[i] ? yearlyCompleteness[i] : 0;
+                totalConsistencyCells += yearlyConsistency[i] ? yearlyConsistency[i] : 0;
+            }
+
+            return {
+                completeness_percentage: totalCompletenessCells / diff,
+                consistency_percentage: totalConsistencyCells / diff
+            };
         }
-    
-        // Sum up the values for the specified range of years
-        for (let i = startYear; i <= endYear; i++) {
-            totalCompletenessCells += yearlyCompleteness[i] ? yearlyCompleteness[i] : 0;
-            totalConsistencyCells += yearlyConsistency[i] ? yearlyConsistency[i] : 0;
-        }
-    
-        return {
-            completeness_percentage: totalCompletenessCells / diff, 
-            consistency_percentage: totalConsistencyCells / diff
-        };
     } else {
         let completeness = 0
         let consistency = 0
         for (let i = data.chronological_order_start; i <= data.chronological_order_end; i++) {
-            completeness ++
-            consistency ++
+            completeness++
+            consistency++
         }
         return {
-            completeness_percentage: completeness / diff > 1 ? 1 : completeness / diff, 
+            completeness_percentage: completeness / diff > 1 ? 1 : completeness / diff,
             consistency_percentage: consistency / diff > 1 ? 1 : consistency / diff
         }
     }
@@ -151,8 +194,8 @@ export const filterData = (data, sliderValue, dataGroup) => {
     let documents = [];
     data
         .filter((doc) => {
-            return true ? dataGroup === 'all' : doc.data_group === dataGroup
-        })     
+            return dataGroup === 'all' || doc.data_group === dataGroup
+        })
         .map((doc) => {
             const metrics = calculateMetrics(doc, sliderValue[0], sliderValue[1]);
             if (!metrics) return false
@@ -167,7 +210,7 @@ export const filterData = (data, sliderValue, dataGroup) => {
                 chrono_end: doc.chronological_order_end
             });
             return true;
-    })
+        })
     return documents;
 }
 
