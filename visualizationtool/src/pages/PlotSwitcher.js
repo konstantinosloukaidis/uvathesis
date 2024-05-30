@@ -14,7 +14,7 @@ import BarPlot from '../components/BarPlot';
 import { logActivity } from '../utils/user-logger';
 
 const PlotSwitcher = () => {
-    
+
     const [originalData, setOriginalData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [groupKey, setGroupKey] = useState('all');
@@ -25,7 +25,7 @@ const PlotSwitcher = () => {
     const fetchOriginalData = useMemo(() => async () => {
         fetch(`/api/${country}`)
             .then((res) => res.json())
-            .then((data) => {        
+            .then((data) => {
                 setOriginalData(data.data);
                 setFilteredData(filterData(data.data, sliderValue, groupKey));
             });
@@ -36,7 +36,7 @@ const PlotSwitcher = () => {
             setFilteredData(filterData(originalData, sliderValue, groupKey));
         }
     }, [sliderValue, originalData, groupKey]);
-    
+
 
     const plotFilteredData = filteredData.map(({ file, completeness, consistency, accessibility, retrieval, currency }) => ({
         file, completeness, consistency, accessibility, retrieval, currency
@@ -96,37 +96,41 @@ const PlotSwitcher = () => {
 
     return (
         <div className="main-container">
-            <Card         
+            <Card
                 title={
                     <div>
-                        <FontAwesomeIcon icon={faMap} onClick={() => navigate("/map")} style={{ marginRight: "5px", cursor: "pointer"}}/>
-                            Plots for {country}
+                        <FontAwesomeIcon icon={faMap} onClick={() => navigate("/map")} style={{ marginRight: "5px", cursor: "pointer" }} />
+                        Plots for {country}
                     </div>
                 }
                 className='card-container'
             >
-                
+
                 <Row gutter={16}>
                     <Col span={6}>
                         <div className="information-container">
                             Information about the metrics
-                            <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                            <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer" }} />
                         </div>
                         <div>
-                            <h3>Choose to sort:</h3>
-                            <Select
-                                placeholder="Sort by"
-                                style={{ width: '80%', marginBottom: '10px' }}
-                                onChange={handleSortChange}
-                                defaultValue={"accessibility"}
-                            >
-                                <Select.Option value="accessibility">Accessibility</Select.Option>
-                                <Select.Option value="completeness">Completeness</Select.Option>
-                                <Select.Option value="consistency">Consistency</Select.Option>
-                                <Select.Option value="retrieval">Retrieval</Select.Option>
-                                <Select.Option value="currency">Currency</Select.Option>
-                            </Select>
-                            <FontAwesomeIcon icon={sortDesc ? faArrowDownShortWide : faArrowUpWideShort} onClick={() => setSortDesc(!sortDesc)} style={{ marginLeft: "10px", cursor: "pointer"}}/>
+                            {heatMap &&
+                                <>
+                                    <h3>Choose to sort:</h3>
+                                    <Select
+                                        placeholder="Sort by"
+                                        style={{ width: '80%', marginBottom: '10px' }}
+                                        onChange={handleSortChange}
+                                        defaultValue={"accessibility"}
+                                    >
+                                        <Select.Option value="accessibility">Accessibility</Select.Option>
+                                        <Select.Option value="completeness">Completeness</Select.Option>
+                                        <Select.Option value="consistency">Consistency</Select.Option>
+                                        <Select.Option value="retrieval">Retrieval</Select.Option>
+                                        <Select.Option value="currency">Currency</Select.Option>
+                                    </Select>
+                                    <FontAwesomeIcon icon={sortDesc ? faArrowUpWideShort : faArrowDownShortWide} onClick={() => setSortDesc(!sortDesc)} style={{ marginLeft: "10px", cursor: "pointer" }} />
+                                </>
+                            }
                         </div>
                         <h3>Filter data groups:</h3>
                         <Select
@@ -137,8 +141,11 @@ const PlotSwitcher = () => {
                         >
                             <Select.Option value="all">All</Select.Option>
                             <Select.Option value="coverage">Coverage</Select.Option>
+                            <Select.Option value="trip frequency">Trip Frequency</Select.Option>
+                            <Select.Option value="sustainability">Sustainability</Select.Option>
+                            <Select.Option value="comfort">Comfort</Select.Option>
                         </Select>
-                        {!scatterPlot && !bubblePlot && !barPlot &&
+                        {heatMap &&
                             <div>
                                 <h3>Interested in other plots?</h3>
                                 <Row gutter={4}>
@@ -164,7 +171,7 @@ const PlotSwitcher = () => {
                                                 handlePlotButtonClick("bubble");
                                             }}
                                         >
-                                        Bubble Plot
+                                            Bubble Plot
                                         </Button>
                                     </Col>
                                 </Row>
@@ -180,11 +187,6 @@ const PlotSwitcher = () => {
                                         Data Groups Bar Plot
                                     </Button>
                                 </div>
-                                <h3>Filter years ({sliderValue[0]}-{sliderValue[1]})</h3>
-                                <Slider range min={1970} max={2024}
-                                    value={[sliderValue[0],sliderValue[1]]}
-                                    onChange={handleSliderChange} 
-                                />
                             </div>
                         }
                         {(scatterPlot || bubblePlot || barPlot) &&
@@ -201,9 +203,18 @@ const PlotSwitcher = () => {
                                 Heat map
                             </Button>
                         }
+                        {!barPlot &&
+                            <>
+                                <h3>Filter years ({sliderValue[0]}-{sliderValue[1]})</h3>
+                                <Slider range min={1970} max={2024}
+                                    value={[sliderValue[0], sliderValue[1]]}
+                                    onChange={handleSliderChange}
+                                />
+                            </>
+                        }
                         <div>
-                            <h3 style={{display: "inline"}}>Reset options &#129398;:</h3>
-                            <FontAwesomeIcon icon={faArrowRotateLeft} onClick={() => resetOptions()} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                            <h3 style={{ display: "inline" }}>Reset options &#129398;:</h3>
+                            <FontAwesomeIcon icon={faArrowRotateLeft} onClick={() => resetOptions()} style={{ marginLeft: "5px", cursor: "pointer" }} />
                         </div>
                         {selectedLabels.length > 0 && (
                             <div className="legend-container">
@@ -213,7 +224,7 @@ const PlotSwitcher = () => {
                                         <span>X axis: {firstLetterUppercase(selectedLabels[0])}</span>
                                     </div>
                                 }
-                                {selectedLabels.length > 1 && 
+                                {selectedLabels.length > 1 &&
                                     <div key={2} className="legend-item">
                                         <span>Y axis: {firstLetterUppercase(selectedLabels[1])}</span>
                                     </div>
@@ -232,8 +243,8 @@ const PlotSwitcher = () => {
                     <Col span={18} style={{ overflow: 'auto' }}>
                         <PlotCard>
                             {heatMap &&
-                                <HeatMap 
-                                    data={plotFilteredData} 
+                                <HeatMap
+                                    data={plotFilteredData}
                                     sortKey={sortKey}
                                     sortDesc={sortDesc}
                                     selectedLabels={selectedLabels}
@@ -242,23 +253,23 @@ const PlotSwitcher = () => {
                                 />
                             }
                             {scatterPlot &&
-                                <ScatterPlot 
-                                    data={plotFilteredData} 
-                                    xAxisVariable={selectedLabels[0]} 
-                                    yAxisVariable={selectedLabels[1]} 
+                                <ScatterPlot
+                                    data={plotFilteredData}
+                                    xAxisVariable={selectedLabels[0]}
+                                    yAxisVariable={selectedLabels[1]}
                                 />
                             }
                             {bubblePlot &&
-                                <BubblePlot 
-                                    data={plotFilteredData} 
-                                    xAxisVariable={selectedLabels[0]} 
+                                <BubblePlot
+                                    data={plotFilteredData}
+                                    xAxisVariable={selectedLabels[0]}
                                     yAxisVariable={selectedLabels[1]}
-                                    zAxisVariables={selectedLabels.slice(2)} 
+                                    zAxisVariables={selectedLabels.slice(2)}
                                 />
                             }
                             {barPlot &&
-                                <BarPlot 
-                                    data={countByDataGroup(originalData)} 
+                                <BarPlot
+                                    data={countByDataGroup(originalData)}
                                 />
                             }
                         </PlotCard>
@@ -266,7 +277,7 @@ const PlotSwitcher = () => {
                 </Row>
             </Card>
         </div>
-  );
+    );
 };
 
 export default PlotSwitcher;
