@@ -132,7 +132,7 @@ const PlotSwitcher = () => {
                                 </>
                             }
                         </div>
-                        <h3>Filter data groups:</h3>
+                        <h3>Filter datasets based on group:</h3>
                         <Select
                             placeholder="Sort by"
                             style={{ width: '80%', marginBottom: '10px' }}
