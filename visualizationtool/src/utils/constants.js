@@ -19,11 +19,20 @@ export const FREQUENCY_MAP = {
 }
 
 export const UNIT_MAP = {
-    'KM': 'Kilometre',
+    'KM': 'Kilometres',
     'NR': 'Number',
     'THS_T': 'Thousand tonnes',
     'FLOAT': 'Percentage/Number',
-    'LAY': 'Layers (no units)'
+    'LAY': 'Layers (no units)',
+    'MIO_SKM': 'Million seat-kilometres',
+    'MIO_VKM': 'Million vehicle-kilometres',
+    'THS_PAS': 'Thousand passengers',
+    'THS_TRKM': 'Thousand train-kilometres',
+    'PAS': 'Passengers',
+    'MIO_PKM': 'Million passenger-kilometres',
+    'THS': 'Thousand',
+    'T': 'Tonnes'
+
 }
 
 export const VERACITY_MAP = {

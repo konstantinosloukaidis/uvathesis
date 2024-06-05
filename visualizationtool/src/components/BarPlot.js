@@ -25,7 +25,7 @@ const BarPlot = ({ data }) => {
             .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
         // X axis
-        const xAxisLabels = ['coverage', 'trip Frequency', 'comfort', 'sustainability']
+        const xAxisLabels = ['coverage', 'trip frequency', 'comfort', 'sustainability', 'equipment', 'pricing']
         var x = d3.scaleBand()
             .range([0, width])
             .domain(xAxisLabels)
