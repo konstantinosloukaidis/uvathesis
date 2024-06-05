@@ -3,8 +3,15 @@ import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import { FIVE_STAR_RATING_METRICS, PERCENTAGE_METRICS, BUBBLE_PLOT_COLOUR_SCHEME } from '../utils/constants';
 import { firstLetterUppercase, bubblePlotTransform } from '../utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
-const BubblePlot = ({ data, xAxisVariable, yAxisVariable, zAxisVariables }) => {
+const BubblePlot = ({ data, xAxisVariable, yAxisVariable, zAxisVariables, country }) => {
+
+    const navigate = useNavigate();
+
+    const openSource = (label) => {
+        navigate(`/document/${country}/${label}`);
+    }
 
     function createBubblePlot(data, xAxisVariable, yAxisVariable, zAxisVariables) {
         d3.select("#my_dataviz svg").remove();
@@ -138,7 +145,11 @@ const BubblePlot = ({ data, xAxisVariable, yAxisVariable, zAxisVariables }) => {
                 .style("opacity", 0.5)
             .on("mouseover", showTooltip )
             .on("mousemove", moveTooltip )
-            .on("mouseleave", hideTooltip );
+            .on("mouseleave", hideTooltip )
+            .style("cursor", "pointer")
+            .on("click", (_, d) => {
+                openSource(d.file);
+            });
     }
 
     useEffect(() => {
@@ -153,7 +164,8 @@ BubblePlot.propTypes = {
     data: PropTypes.array,
     xAxisVariable: PropTypes.string,
     yAxisVariable: PropTypes.string,
-    zAxisVariables: PropTypes.array
+    zAxisVariables: PropTypes.array,
+    country: PropTypes.string
   };
 
 export default BubblePlot;

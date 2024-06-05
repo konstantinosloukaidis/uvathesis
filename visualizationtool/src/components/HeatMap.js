@@ -125,7 +125,7 @@ const HeatMap = ({ data, sortKey, selectedLabels, setSelectedLabels, country, so
             .classed("y-axis-label", true)
             .on("click", (_, d) => {
                 openSource(d);
-            });;
+            });
                 
         svg.select(".domain") // Removes x axis border line
             .remove();

@@ -257,6 +257,7 @@ const PlotSwitcher = () => {
                                     data={plotFilteredData}
                                     xAxisVariable={selectedLabels[0]}
                                     yAxisVariable={selectedLabels[1]}
+                                    country={country}
                                 />
                             }
                             {bubblePlot &&
@@ -265,6 +266,7 @@ const PlotSwitcher = () => {
                                     xAxisVariable={selectedLabels[0]}
                                     yAxisVariable={selectedLabels[1]}
                                     zAxisVariables={selectedLabels.slice(2)}
+                                    country={country}
                                 />
                             }
                             {barPlot &&
