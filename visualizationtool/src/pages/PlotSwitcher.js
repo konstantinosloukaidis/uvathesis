@@ -144,6 +144,8 @@ const PlotSwitcher = () => {
                             <Select.Option value="trip frequency">Trip Frequency</Select.Option>
                             <Select.Option value="sustainability">Sustainability</Select.Option>
                             <Select.Option value="comfort">Comfort</Select.Option>
+                            <Select.Option value="pricing">Pricing</Select.Option>
+                            <Select.Option value="equipment">Equipment</Select.Option>
                         </Select>
                         {heatMap &&
                             <div>
