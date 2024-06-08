@@ -3,12 +3,17 @@ import { Tabs, Descriptions, Rate } from 'antd';
 import PropTypes from 'prop-types';
 import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP } from '../utils/constants';
 import { nullTranslator, firstLetterUppercase } from '../utils/helpers';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 
 function FileCard({ fileData }) {
     const navigate = useNavigate();
+    const curLocation = useLocation();
+
+    const navigateToMetrics = () => {
+        navigate("/information/metrics", { state: { referrer: curLocation.pathname } });
+    }
 
     const items = [
         {
@@ -44,22 +49,22 @@ function FileCard({ fileData }) {
             children: 
                 <Descriptions bordered column={1}>
                     <Descriptions.Item label="Complete Cells">{(fileData.available_completeness_cells*100).toFixed(2)}%
-                        <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                        <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Complete Rows">{(fileData.available_completeness_rows*100).toFixed(2)}%
-                        <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                        <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Consistent Cells">{(fileData.available_consistency_cells*100).toFixed(2)}%
-                        <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                        <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Consistent Rows">{(fileData.available_consistency_rows*100).toFixed(2)}%
-                        <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                        <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Accessibility"><Rate value={fileData.accessibility} disabled/>
                         <FontAwesomeIcon icon={faCircleInfo} onClick={() => window.open("https://5stardata.info/en/")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Retrieval"><Rate value={fileData.retrieval} disabled/>
-                        <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/five-star-retrieval-difficulty")} style={{ marginLeft: "5px", cursor: "pointer"}}/>
+                        <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/five-star-retrieval-difficulty", { state: { referrer: curLocation.pathname } })} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Chronological Order Available">{fileData.chronological_order_start} - {fileData.chronological_order_end}</Descriptions.Item>
                     <Descriptions.Item label="Access Mechanism">{fileData.access_mechanism}</Descriptions.Item>

@@ -12,10 +12,11 @@ export const NUMERIC_UNITS = ['T', 'THS_T', 'KM', 'NR', 'MIO_VKM', 'MIO_SKM', 'T
 export const PERCENTAGE_UNITS = []
 
 export const FREQUENCY_MAP = {
-    "A": "Annual",
+    "A": "Annually",
     "M": "Monthly",
     "Q": "Quarterly",
-    "U": "Undefined/Not specified"
+    "U": "Undefined/Not specified",
+    "Y": "Annually"
 }
 
 export const UNIT_MAP = {

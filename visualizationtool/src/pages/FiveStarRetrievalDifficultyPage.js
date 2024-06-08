@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Rate, Typography } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,6 +8,16 @@ const { Title, Paragraph } = Typography;
 
 const FiveStarRetrievalDifficultyPage = () => {
     const navigate = useNavigate();
+    const curLocation = useLocation();
+    const referrer = curLocation.state?.referrer;
+
+    const navigateBack = () => {
+        if (referrer) {
+            navigate(referrer);
+        } else {
+            navigate("/information/metrics");
+        }
+    }
 
     const data = [
         {
@@ -40,7 +50,7 @@ const FiveStarRetrievalDifficultyPage = () => {
     return (
         <div className="main-container" >
             <Title style={{ marginRight: "50px" }}level={2}>
-                <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/information/metrics")} style={{ marginRight: "5px", cursor: "pointer"}}/>
+                <FontAwesomeIcon icon={faArrowLeft} onClick={navigateBack} style={{ marginRight: "5px", cursor: "pointer"}}/>
                 Five Star Retrieval Difficulty</Title>
             <List
                 itemLayout="vertical"

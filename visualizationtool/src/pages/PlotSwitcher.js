@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Row, Col, Select, Card, Button, Slider } from 'antd';
 import PlotCard from '../components/PlotCard';
 import HeatMap from '../components/HeatMap';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { firstLetterUppercase, filterData, countByDataGroup } from '../utils/helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMap } from '@fortawesome/free-regular-svg-icons';
@@ -21,6 +21,7 @@ const PlotSwitcher = () => {
     const [sliderValue, setSliderValue] = useState([1970, 2024]);
     const navigate = useNavigate();
     const { country } = useParams();
+    const curLocation = useLocation();
 
     const fetchOriginalData = useMemo(() => async () => {
         fetch(`/api/${country}`)
@@ -110,7 +111,7 @@ const PlotSwitcher = () => {
                     <Col span={6}>
                         <div className="information-container">
                             Information about the metrics
-                            <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics")} style={{ marginLeft: "5px", cursor: "pointer" }} />
+                            <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/metrics", { state: { referrer: curLocation.pathname } })} style={{ marginLeft: "5px", cursor: "pointer" }} />
                         </div>
                         <div>
                             {heatMap &&
