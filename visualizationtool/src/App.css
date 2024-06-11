@@ -110,3 +110,16 @@ span svg {
   border-radius: 8px;
   background-color: #eee69d;
 }
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}

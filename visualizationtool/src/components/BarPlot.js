@@ -6,10 +6,12 @@ import { firstLetterUppercase } from '../utils/helpers';
 const BarPlot = ({ data }) => {
 
     function createBarPlot(data) {
-        const barData = Object.keys(data).filter(key => key !== 'total').map(key => ({
+        const barData = Object.keys(data).map(key => ({
             data_group: key,
             count: data[key]
         }));
+        barData.sort((a, b) => b.count - a.count);
+        const xAxisLabels = barData.map(d => d.data_group);
 
         d3.select("#my_dataviz svg").remove();
         const margin = { top: 20, right: 20, bottom: 60, left: 50 },
@@ -25,8 +27,7 @@ const BarPlot = ({ data }) => {
             .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
         // X axis
-        const xAxisLabels = ['coverage', 'trip frequency', 'comfort', 'sustainability', 'equipment', 'pricing']
-        var x = d3.scaleBand()
+        const x = d3.scaleBand()
             .range([0, width])
             .domain(xAxisLabels)
             .padding(0.2);
@@ -38,11 +39,16 @@ const BarPlot = ({ data }) => {
             .style("text-anchor", "end");
 
         // Add Y axis
-        var y = d3.scaleLinear()
+        const y = d3.scaleLinear()
             .domain([0, data['total']])
             .range([height, 0]);
         svg.append("g")
             .call(d3.axisLeft(y));
+
+        const tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
         // Bars
         svg.selectAll("mybar")
@@ -54,6 +60,19 @@ const BarPlot = ({ data }) => {
             .attr("width", x.bandwidth())
             .attr("height", function (d) { return height - y(d.count); })
             .attr("fill", "#69b3a2")
+            .on("mouseover", function(event, d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(`<strong>${d.count} datasets</strong>`)
+                    .style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
     }
 
     useEffect(() => {
