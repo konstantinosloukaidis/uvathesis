@@ -32,7 +32,8 @@ export const UNIT_MAP = {
     'PAS': 'Passengers',
     'MIO_PKM': 'Million passenger-kilometres',
     'THS': 'Thousand',
-    'T': 'Tonnes'
+    'T': 'Tonnes',
+    'EUR': 'Euros'
 
 }
 
