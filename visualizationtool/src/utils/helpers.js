@@ -190,11 +190,12 @@ const calculateMetrics = (data, startYear, endYear) => {
 
 };
 
-export const filterData = (data, sliderValue, dataGroup) => {
+export const filterData = (data, sliderValue, dataGroups) => {
     let documents = [];
+    console.log(dataGroups)
     data
         .filter((doc) => {
-            return dataGroup === 'all' || doc.data_group === dataGroup
+            return dataGroups.includes(doc.data_group)
         })
         .map((doc) => {
             const metrics = calculateMetrics(doc, sliderValue[0], sliderValue[1]);

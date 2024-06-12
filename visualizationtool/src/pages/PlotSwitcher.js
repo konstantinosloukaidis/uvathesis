@@ -17,7 +17,7 @@ const PlotSwitcher = () => {
 
     const [originalData, setOriginalData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-    const [groupKey, setGroupKey] = useState('all');
+    const [groupKeys, setGroupKeys] = useState([ "coverage", "comfort", "trip frequency", "sustainability", "pricing", "equipment" ]);
     const [sliderValue, setSliderValue] = useState([1970, 2024]);
     const navigate = useNavigate();
     const { country } = useParams();
@@ -28,15 +28,15 @@ const PlotSwitcher = () => {
             .then((res) => res.json())
             .then((data) => {
                 setOriginalData(data.data);
-                setFilteredData(filterData(data.data, sliderValue, groupKey));
+                setFilteredData(filterData(data.data, sliderValue, groupKeys));
             });
     }, [country]);
 
     const calculateMetricsHook = useMemo(() => async () => {
         if (originalData.length > 0) {
-            setFilteredData(filterData(originalData, sliderValue, groupKey));
+            setFilteredData(filterData(originalData, sliderValue, groupKeys));
         }
-    }, [sliderValue, originalData, groupKey]);
+    }, [sliderValue, originalData, groupKeys]);
 
 
     const plotFilteredData = filteredData.map(({ file, completeness, consistency, accessibility, retrieval, currency }) => ({
@@ -64,7 +64,7 @@ const PlotSwitcher = () => {
     };
 
     const handleGroupChange = value => {
-        setGroupKey(value);
+        setGroupKeys(value);
     };
 
     const handleSliderChange = value => {
@@ -80,7 +80,7 @@ const PlotSwitcher = () => {
         setSliderValue([1970, 2024]);
         setSelectedLabels([]);
         setSortKey("accessibility");
-        setGroupKey('all');
+        setGroupKeys([ "coverage", "comfort", "trip frequency", "sustainability", "pricing", "equipment" ]);
         setSortDesc(true);
     }
 
@@ -135,12 +135,12 @@ const PlotSwitcher = () => {
                         </div>
                         <h3>Filter datasets based on group:</h3>
                         <Select
-                            placeholder="Sort by"
+                            mode='tags'
+                            placeholder="Filter by"
                             style={{ width: '80%', marginBottom: '10px' }}
                             onChange={handleGroupChange}
-                            defaultValue={"all"}
+                            defaultValue={[ "coverage", "comfort", "trip frequency", "sustainability", "pricing", "equipment" ]}
                         >
-                            <Select.Option value="all">All</Select.Option>
                             <Select.Option value="coverage">Coverage</Select.Option>
                             <Select.Option value="trip frequency">Trip Frequency</Select.Option>
                             <Select.Option value="sustainability">Sustainability</Select.Option>
