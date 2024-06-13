@@ -192,7 +192,6 @@ const calculateMetrics = (data, startYear, endYear) => {
 
 export const filterData = (data, sliderValue, dataGroups) => {
     let documents = [];
-    console.log(dataGroups)
     data
         .filter((doc) => {
             return dataGroups.includes(doc.data_group)
@@ -219,17 +218,21 @@ export const nullTranslator = (value) => {
     return value || 'No data'
 }
 
-export const countByDataGroup = (data) => {
+export const countByDataGroup = (data, sliderValue) => {
+    let startYear = sliderValue[0]
+    let endYear = sliderValue[1]
     return data.reduce((acc, doc) => {
         const dataGroup = doc.data_group;
-        // Increment the count for the specific data_group
-        if (acc[dataGroup]) {
-            acc[dataGroup]++;
-        } else {
-            acc[dataGroup] = 1;
+
+        if (Number(doc.chronological_order_start) >= startYear && Number(doc.chronological_order_end) <= endYear) {
+            if (acc[dataGroup]) {
+                acc[dataGroup]++;
+            } else {
+                acc[dataGroup] = 1;
+            }
+            acc.total++;
         }
-        // Increment the total count
-        acc.total++;
+
         return acc;
     }, { total: 0 }); // Initialize total count to 0
 };

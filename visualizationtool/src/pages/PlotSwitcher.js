@@ -133,21 +133,25 @@ const PlotSwitcher = () => {
                                 </>
                             }
                         </div>
-                        <h3>Filter datasets based on group:</h3>
-                        <Select
-                            mode='tags'
-                            placeholder="Filter by"
-                            style={{ width: '80%', marginBottom: '10px' }}
-                            onChange={handleGroupChange}
-                            defaultValue={[ "coverage", "comfort", "trip frequency", "sustainability", "pricing", "equipment" ]}
-                        >
-                            <Select.Option value="coverage">Coverage</Select.Option>
-                            <Select.Option value="trip frequency">Trip Frequency</Select.Option>
-                            <Select.Option value="sustainability">Sustainability</Select.Option>
-                            <Select.Option value="comfort">Comfort</Select.Option>
-                            <Select.Option value="pricing">Pricing</Select.Option>
-                            <Select.Option value="equipment">Equipment</Select.Option>
-                        </Select>
+                        {!barPlot &&
+                            <div>
+                                <h3>Filter datasets based on group:</h3>
+                                <Select
+                                    mode='tags'
+                                    placeholder="Filter by"
+                                    style={{ width: '80%', marginBottom: '10px' }}
+                                    onChange={handleGroupChange}
+                                    defaultValue={[ "coverage", "comfort", "trip frequency", "sustainability", "pricing", "equipment" ]}
+                                >
+                                    <Select.Option value="coverage">Coverage</Select.Option>
+                                    <Select.Option value="trip frequency">Trip Frequency</Select.Option>
+                                    <Select.Option value="sustainability">Sustainability</Select.Option>
+                                    <Select.Option value="comfort">Comfort</Select.Option>
+                                    <Select.Option value="pricing">Pricing</Select.Option>
+                                    <Select.Option value="equipment">Equipment</Select.Option>
+                                </Select>
+                            </div>
+                        }
                         {heatMap &&
                             <div>
                                 <h3>Interested in other plots?</h3>
@@ -206,20 +210,18 @@ const PlotSwitcher = () => {
                                 Heat map
                             </Button>
                         }
-                        {!barPlot &&
-                            <>
-                                <h3>Filter years ({sliderValue[0]}-{sliderValue[1]})</h3>
-                                <Slider range min={1970} max={2024}
-                                    value={[sliderValue[0], sliderValue[1]]}
-                                    onChange={handleSliderChange}
-                                />
-                            </>
-                        }
+                        <>
+                            <h3>Filter years ({sliderValue[0]}-{sliderValue[1]})</h3>
+                            <Slider range min={1970} max={2024}
+                                value={[sliderValue[0], sliderValue[1]]}
+                                onChange={handleSliderChange}
+                            />
+                        </>
                         <div>
                             <h3 style={{ display: "inline" }}>Reset options &#129398;:</h3>
                             <FontAwesomeIcon icon={faArrowRotateLeft} onClick={() => resetOptions()} style={{ marginLeft: "5px", cursor: "pointer" }} />
                         </div>
-                        {selectedLabels.length > 0 && (
+                        {selectedLabels.length > 0 && !barPlot && (
                             <div className="legend-container">
                                 <h3>Legend</h3>
                                 {
@@ -274,7 +276,7 @@ const PlotSwitcher = () => {
                             }
                             {barPlot &&
                                 <BarPlot
-                                    data={countByDataGroup(originalData)}
+                                    data={countByDataGroup(originalData, sliderValue)}
                                 />
                             }
                         </PlotCard>

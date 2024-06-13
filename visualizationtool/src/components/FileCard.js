@@ -48,16 +48,16 @@ function FileCard({ fileData }) {
             label: "Metrics",
             children: 
                 <Descriptions bordered column={1}>
-                    <Descriptions.Item label="Complete Cells">{(fileData.available_completeness_cells*100).toFixed(2)}%
+                    <Descriptions.Item label="Complete Cells">{fileData.available_completeness_cells ? (fileData.available_completeness_cells*100).toFixed(2) + "%" : "No data"}
                         <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Complete Rows">{(fileData.available_completeness_rows*100).toFixed(2)}%
+                    <Descriptions.Item label="Complete Rows">{fileData.available_completeness_rows ? (fileData.available_completeness_rows*100).toFixed(2) + "%" : "No data"}
                         <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Consistent Cells">{(fileData.available_consistency_cells*100).toFixed(2)}%
+                    <Descriptions.Item label="Consistent Cells">{ fileData.available_consistency_cells ? (fileData.available_consistency_cells*100).toFixed(2) + "%" : "No data"}
                         <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Consistent Rows">{(fileData.available_consistency_rows*100).toFixed(2)}%
+                    <Descriptions.Item label="Consistent Rows">{ fileData.available_consistency_rows ? (fileData.available_consistency_rows*100).toFixed(2) + "%" : "No data"}
                         <FontAwesomeIcon icon={faCircleInfo} onClick={navigateToMetrics} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
                     <Descriptions.Item label="Accessibility"><Rate value={fileData.accessibility} disabled/>
