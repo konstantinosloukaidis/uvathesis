@@ -37,8 +37,11 @@ const AboutPage = () => {
                     </p>
                     <p>
                         <strong>For more information, feel free to connect with me on LinkedIn or send me an email. </strong>
-                        <FontAwesomeIcon icon={faAt} style={{ marginLeft: "5px", cursor: "pointer", color: "blue", fontSize: "15px"}} onClick={() => window.open("mailto:konstantinos.loukaidis@student.uva.nl?subject=Visualisation%20Tool%20Referrer")}/>
                         <FontAwesomeIcon icon={faLinkedin} style={{ marginLeft: "5px", cursor: "pointer", color: "blue", fontSize: "15px"}} onClick={() => window.open("https://www.linkedin.com/in/konstantinos-loukaidis-653b11225/", "_blank")}/>
+                        <FontAwesomeIcon icon={faAt} style={{ marginLeft: "5px", cursor: "pointer", color: "blue", fontSize: "15px"}} onClick={() => window.open("mailto:konstantinos.loukaidis@student.uva.nl?subject=Visualisation%20Tool%20Referrer")}/>
+                    </p>
+                    <p>
+                        You can also view the source of the project at my GitHub!
                         <FontAwesomeIcon icon={faGithub} style={{ marginLeft: "5px", cursor: "pointer", color: "black", fontSize: "15px"}} onClick={() => window.open("https://github.com/DevOps-Project-UvA2024/DevOps-Project", "_blank")}/>
                     </p>
                 </div>
