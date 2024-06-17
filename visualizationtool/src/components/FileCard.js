@@ -82,7 +82,7 @@ function FileCard({ fileData }) {
     ]
 
     return (
-        <div style={{ height: '580px', width: '500px' }}>
+        <div style={{ height: '580px', width: '100%' }}>
             <Tabs defaultActiveKey="1" items={items} style={{ height: '100%', overflow: 'auto' }}/>
         </div>
     );

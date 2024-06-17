@@ -124,3 +124,9 @@ span svg {
   border-radius: 8px;
   pointer-events: none;
 }
+
+.break-filename {
+  word-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+}

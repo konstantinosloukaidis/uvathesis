@@ -179,9 +179,12 @@ const calculateMetrics = (data, startYear, endYear) => {
         let completeness = 0
         let consistency = 0
         for (let i = data.chronological_order_start; i <= data.chronological_order_end; i++) {
-            completeness++
-            consistency++
+            if (i >= startYear && i <= endYear) {
+                completeness++;
+                consistency++;
+            }
         }
+
         return {
             completeness_percentage: completeness / diff > 1 ? 1 : completeness / diff,
             consistency_percentage: consistency / diff > 1 ? 1 : consistency / diff

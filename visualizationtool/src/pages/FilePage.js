@@ -35,17 +35,18 @@ const FilePage = () => {
 
     return (
         <div className="main-container" >
-            <Card         
+            <Card 
+                style={{width: "50%"}}        
                 title={
                     <div>
                         <FontAwesomeIcon icon={faArrowAltCircleLeft} onClick={() => navigate(`/plots/${country}`)} style={{ marginRight: "5px", cursor: "pointer"}}/>
                         <FontAwesomeIcon icon={faMap} onClick={() => navigate("/map")} style={{ marginRight: "5px", cursor: "pointer"}}/>
-                        File information: {filename}
+                        <span className="break-filename">File information: {filename}</span>
                     </div>
                 }
             >   
                 {fileData &&             
-                    <FileCard fileData={fileData.data} />
+                    <FileCard fileData={fileData.data}/>
                 }
             </Card>
         </div>
