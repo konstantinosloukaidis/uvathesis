@@ -218,7 +218,7 @@ export const filterData = (data, sliderValue, dataGroups) => {
 }
 
 export const nullTranslator = (value) => {
-    return value || 'No data'
+    return value || 'No data available'
 }
 
 export const countByDataGroup = (data, sliderValue) => {

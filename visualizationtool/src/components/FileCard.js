@@ -18,7 +18,7 @@ function FileCard({ fileData }) {
     const items = [
         {
             key: '1',
-            label: "Metadata",
+            label: "Metadata - General Information",
             children: 
                 <Descriptions bordered column={1}>
                     <Descriptions.Item label="Country">
@@ -36,15 +36,25 @@ function FileCard({ fileData }) {
                     <Descriptions.Item label="Source">{fileData.source}</Descriptions.Item>
                     <Descriptions.Item label="Frequency">{fileData.frequency ? FREQUENCY_MAP[fileData.frequency.trim()] : "No data"}</Descriptions.Item>
                     <Descriptions.Item label="Unit">{fileData.unit ? UNIT_MAP[fileData.unit.trim()] ? UNIT_MAP[fileData.unit.trim()] : fileData.unit : "No data"}</Descriptions.Item>
-                    <Descriptions.Item label="Track of updates">{fileData.track_updates}{fileData.last_update_date && "(" + fileData.last_update_date + ")"}</Descriptions.Item>
-                    <Descriptions.Item label="Delay in Publication">{nullTranslator(fileData.delay_publication)}</Descriptions.Item>
-                    <Descriptions.Item label="Publish date">{nullTranslator(fileData.publish_date)}</Descriptions.Item>
                     <Descriptions.Item label="Veracity">{VERACITY_MAP[fileData.veracity]}</Descriptions.Item>
                     <Descriptions.Item label="Data Group">{firstLetterUppercase(fileData.data_group)}</Descriptions.Item>
                 </Descriptions>
         },
         {
             key: '2',
+            label: "Metadata - Dates",
+            children: 
+                <Descriptions bordered column={1}>
+                    <Descriptions.Item label="Publish date">{nullTranslator(fileData.publish_date)}</Descriptions.Item>
+                    <Descriptions.Item label="Last update date">{nullTranslator(fileData.last_update_date)}</Descriptions.Item>
+                    <Descriptions.Item label="Data collection date">{nullTranslator(fileData.data_collection_date)}</Descriptions.Item>
+                    <Descriptions.Item label="Track of updates">{nullTranslator(fileData.track_updates)}</Descriptions.Item>
+                    <Descriptions.Item label="Delay in Publication">{nullTranslator(fileData.delay_publication)}</Descriptions.Item>
+                    <Descriptions.Item label="Delay in Update">{nullTranslator(fileData.delay_update)}</Descriptions.Item>
+                </Descriptions>
+        },
+        {
+            key: '3',
             label: "Metrics",
             children: 
                 <Descriptions bordered column={1}>
@@ -71,7 +81,7 @@ function FileCard({ fileData }) {
                 </Descriptions>
         },
         {
-            key: '3',
+            key: '4',
             label: 'Data',
             children:
                 <Descriptions bordered column={1}>
