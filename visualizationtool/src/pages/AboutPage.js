@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMap, faArrowAltCircleLeft } from '@fortawesome/free-regular-svg-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faAt } from '@fortawesome/free-solid-svg-icons';
+import { faAt, faBoltLightning } from '@fortawesome/free-solid-svg-icons';
 
 const AboutPage = () => {
     const navigate = useNavigate();
@@ -39,6 +39,7 @@ const AboutPage = () => {
                         <strong>For more information, feel free to connect with me on LinkedIn or send me an email. </strong>
                         <FontAwesomeIcon icon={faLinkedin} style={{ marginLeft: "5px", cursor: "pointer", color: "blue", fontSize: "15px"}} onClick={() => window.open("https://www.linkedin.com/in/konstantinos-loukaidis-653b11225/", "_blank")}/>
                         <FontAwesomeIcon icon={faAt} style={{ marginLeft: "5px", cursor: "pointer", color: "blue", fontSize: "15px"}} onClick={() => window.open("mailto:konstantinos.loukaidis@student.uva.nl?subject=Visualisation%20Tool%20Referrer")}/>
+                        <FontAwesomeIcon icon={faBoltLightning} style={{ marginLeft: "5px", cursor: "pointer", color: "blue", fontSize: "15px"}} onClick={() => window.open("https://www.youtube.com/watch?v=xvFZjo5PgG0&ab_channel=Duran&autoplay=1")}/>
                     </p>
                     <p>
                         You can also view the source of the project at my GitHub!

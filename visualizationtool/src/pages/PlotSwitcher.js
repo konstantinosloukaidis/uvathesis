@@ -218,7 +218,7 @@ const PlotSwitcher = () => {
                             />
                         </>
                         <div>
-                            <h3 style={{ display: "inline" }}>Reset options &#129398;:</h3>
+                            <h3 style={{ display: "inline" }}>Reset options:</h3>
                             <FontAwesomeIcon icon={faArrowRotateLeft} onClick={() => resetOptions()} style={{ marginLeft: "5px", cursor: "pointer" }} />
                         </div>
                         {selectedLabels.length > 0 && !barPlot && (
