@@ -3,6 +3,7 @@ import { Tabs, Table, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import StickyBox from 'react-sticky-box';
 
 function MetricsInformationCard() {
     const currentDate = new Date();
@@ -42,14 +43,14 @@ function MetricsInformationCard() {
         },
         {
             key: '4',
-            dimension: 'Veracity',
+            dimension: 'Provenance',
             metric: "OGD or PSD",
             description: "This metric simply explains if the dataset is considered Open Government Data (OGD) or Private Sector Data (PSD).",
             range: '-'
         },
         {
             key: '5',
-            dimension: 'Veracity',
+            dimension: 'Provenance',
             metric: "Source",
             description: "The source of the dataset. This contains the information about where was the dataset found, and not necessarily the original publisher. In case there is information about the origins of the creator of the dataset, for example the municipality, we try to include it.",
             range: '-'
@@ -80,8 +81,8 @@ function MetricsInformationCard() {
         },
         {
             key: '4',
-            dimension: 'Chronological Order',
-            metric: "Metadata examination",
+            dimension: 'Currency',
+            metric: "Metadata examination for data coverage period",
             description: "We check the given metadata from the GetCapabilities request and try to find out information about the currency of the dataset.",
             range: `unbound - ${currentYear}`
         },
@@ -111,8 +112,8 @@ function MetricsInformationCard() {
         },
         {
             key: '4',
-            dimension: 'Chronological Order',
-            metric: "API information",
+            dimension: 'Currency',
+            metric: "API information for data coverage period",
             description: "Depends on the information given for the vendor. Usually it contains current and ongoing information.",
             range: `unbound - ${currentYear}`
         },
@@ -142,8 +143,8 @@ function MetricsInformationCard() {
         },
         {
             key: '4',
-            dimension: 'Chronological Order',
-            metric: "EXCEL/TSV/CSV Chronological order",
+            dimension: 'Currency',
+            metric: "EXCEL/TSV/CSV Data coverage period",
             description: <Button onClick={() => changeTab('3')}>Check related tab</Button>,
             range: `unbound - ${currentYear}`
         },
@@ -180,8 +181,8 @@ function MetricsInformationCard() {
         },
         {
             key: '5',
-            dimension: 'Chronological Order',
-            metric: "Chronological order of data",
+            dimension: 'Currency',
+            metric: "Data coverage period",
             description: "This metric highlights the available years of the dataset. For a year to be considered available, the dataset should have at least one value. This metric showcases how many years of information are available in the dataset.",
             range: `unbound - ${currentYear}`
         },
@@ -211,8 +212,8 @@ function MetricsInformationCard() {
         },
         {
             key: '4',
-            dimension: 'Chronological Order',
-            metric: "Metadata examination",
+            dimension: 'Currency',
+            metric: "Metadata examination for data coverage period",
             description: "Same as Currency",
             range: `unbound - ${currentYear}`
         },
@@ -292,14 +293,32 @@ function MetricsInformationCard() {
         },
     ];
 
+    const renderTabBar = (props, DefaultTabBar) => (
+        <StickyBox
+          offsetTop={0}
+          offsetBottom={20}
+          style={{
+            zIndex: 1,
+          }}
+        >
+          <DefaultTabBar
+            {...props}
+            style={{
+                background: "white",
+              }}
+          />
+        </StickyBox>
+      );
+
     return (
         <div style={{ height: '550px', width: '1100px', overflow: "auto" }}>
-            <Tabs 
-                defaultActiveKey={activeKey} 
-                activeKey={activeKey} 
-                items={items} 
-                onChange={setActiveKey}
-            />
+                <Tabs 
+                    defaultActiveKey={activeKey} 
+                    activeKey={activeKey} 
+                    items={items} 
+                    onChange={setActiveKey}
+                    renderTabBar={renderTabBar}
+                />
         </div>
     );
 }
