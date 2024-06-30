@@ -41,3 +41,13 @@ export const VERACITY_MAP = {
     'OGD': 'Open Government Data',
     'PSD': 'Private Sector Data'
 }
+
+export const SDG_INDICATOR_MAP = {
+    '9.1.1': 'Proportion of the rural population who live within 2km of an all-season road',
+    '9.1.2': 'Passenger and freight volumes, by mode of transport',
+    '3.6.1': 'Death rate due to road traffic injuries',
+    '11.2.1': 'Proportion of population that has convenient access to public transport, by sex, age and persons with disabilities',
+    '12.c.1': 'Amount of fossil-fuel subsidies (production and consumption) per unit of GDP',
+    '11.6.2': 'Annual mean levels of fine particulate matter (e.g. PM2.5 and PM10) in cities (population weighted)',
+    '7.3.1': 'Energy intensity measured in terms of primary energy and GDP'
+}

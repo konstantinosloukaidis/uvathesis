@@ -1,7 +1,7 @@
 import React from 'react';
-import { Tabs, Descriptions, Rate } from 'antd';
+import { Tabs, Descriptions, Rate, Table } from 'antd';
 import PropTypes from 'prop-types';
-import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP } from '../utils/constants';
+import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP, SDG_INDICATOR_MAP } from '../utils/constants';
 import { nullTranslator, firstLetterUppercase } from '../utils/helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +14,30 @@ function FileCard({ fileData }) {
     const navigateToMetrics = () => {
         navigate("/information/metrics", { state: { referrer: curLocation.pathname } });
     }
+
+    const sdfColumns = [
+        {
+            title: 'Indicator',
+            dataIndex: 'indicator',
+            key: 'indicator',
+            render: (text) => <strong>{text}</strong>
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+        },
+      ];
+
+    const sdgData = fileData.sdg_indicators_e?.map((sdg_indicator, index) => ({
+        key: index,
+        indicator: sdg_indicator,
+        description: SDG_INDICATOR_MAP[sdg_indicator],
+        })).sort((a,b) => {
+            if (a.indicator > b.indicator) return -1;
+            else if (a.indicator < b.indicator) return 1;
+            return 0;
+        });
 
     const items = [
         {
@@ -76,7 +100,7 @@ function FileCard({ fileData }) {
                     <Descriptions.Item label="Retrieval"><Rate value={fileData.retrieval} disabled/>
                         <FontAwesomeIcon icon={faCircleInfo} onClick={() => navigate("/information/five-star-retrieval-difficulty", { state: { referrer: curLocation.pathname } })} style={{ marginLeft: "5px", cursor: "pointer"}}/>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Chronological Order Available">{fileData.chronological_order_start} - {fileData.chronological_order_end}</Descriptions.Item>
+                    <Descriptions.Item label="Data coverage period">{parseInt(fileData.chronological_order_start)} - {parseInt(fileData.chronological_order_end)}</Descriptions.Item>
                     <Descriptions.Item label="Access Mechanism">{fileData.access_mechanism}</Descriptions.Item>
                 </Descriptions>
         },
@@ -88,8 +112,21 @@ function FileCard({ fileData }) {
                     <Descriptions.Item label="Data URL">{fileData.data_url ? <a href={fileData.data_url} target='_blank' rel="noreferrer">Link</a> : <span>No link available</span>}</Descriptions.Item>
                     <Descriptions.Item label="Metadata URL">{fileData.metadata_url ? <a href={fileData.metadata_url} target='_blank' rel="noreferrer">Link</a> : <span>No link available</span>}</Descriptions.Item>
                 </Descriptions>
+        },
+        {
+            key: '5',
+            label: 'SDG Indicators',
+            hidden: !fileData.sdg_indicators_e,
+            children:
+                <Table
+                    columns={sdfColumns}
+                    dataSource={sdgData}
+                    pagination={false}
+                    sticky={true}
+                    bordered
+                />
         }
-    ]
+    ].filter(i => !i.hidden)
 
     return (
         <div style={{ height: '580px', width: '100%' }}>
