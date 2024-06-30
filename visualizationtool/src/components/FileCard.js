@@ -5,7 +5,7 @@ import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP, SDG_INDICATOR_MAP } from '../uti
 import { nullTranslator, firstLetterUppercase } from '../utils/helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { faCircleInfo, faSeedling } from '@fortawesome/free-solid-svg-icons';
 
 function FileCard({ fileData }) {
     const navigate = useNavigate();
@@ -15,11 +15,16 @@ function FileCard({ fileData }) {
         navigate("/information/metrics", { state: { referrer: curLocation.pathname } });
     }
 
+    const sdgFooter = () => {
+        return <span>More information about the indicators: <a href='https://unstats.un.org/sdgs/iaeg-sdgs/tier-classification' target='_blank' rel="noreferrer">IAEG-SDGs Tier Classification for Global SDG Indicators</a></span>
+    }
+
     const sdfColumns = [
         {
             title: 'Indicator',
             dataIndex: 'indicator',
             key: 'indicator',
+            width: 100,d
             render: (text) => <strong>{text}</strong>
         },
         {
@@ -115,7 +120,7 @@ function FileCard({ fileData }) {
         },
         {
             key: '5',
-            label: 'SDG Indicators',
+            label: <span style={{color: 'green' }}>SDG Indicators <FontAwesomeIcon icon={faSeedling} onClick={navigateToMetrics} style={{ marginLeft: "5px"}} /></span>,
             hidden: !fileData.sdg_indicators_e,
             children:
                 <Table
@@ -124,6 +129,7 @@ function FileCard({ fileData }) {
                     pagination={false}
                     sticky={true}
                     bordered
+                    footer={() => sdgFooter()}
                 />
         }
     ].filter(i => !i.hidden)
