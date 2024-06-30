@@ -24,7 +24,7 @@ function FileCard({ fileData }) {
             title: 'Indicator',
             dataIndex: 'indicator',
             key: 'indicator',
-            width: 100,d
+            width: 100,
             render: (text) => <strong>{text}</strong>
         },
         {
