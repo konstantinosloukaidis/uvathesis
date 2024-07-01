@@ -5,7 +5,8 @@ import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP, SDG_INDICATOR_MAP } from '../uti
 import { nullTranslator, firstLetterUppercase } from '../utils/helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo, faExclamationTriangle, faSeedling } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faExclamationTriangle, faSeedling, faThumbsDown as dislikeBlue, faThumbsUp as likeBlue } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as likeWhite, faThumbsDown as dislikeWhite } from '@fortawesome/free-regular-svg-icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -29,6 +30,51 @@ function FileCard({ fileData }) {
         </>
     }
 
+    const [votes, setVotes] = useState(fileData.sdg_indicators_e?.map(sdg => ({
+        indicator: sdg.indicator,
+        likes: sdg.thumbsUp || 0,
+        dislikes: sdg.thumbsDown || 0,
+        userVote: null
+    })) || []);
+    
+    const handleVote = (indicator, vote) => {
+        setVotes(prevVotes => prevVotes.map(v => {
+            if (v.indicator === indicator) {
+                let newLikes = v.likes;
+                let newDislikes = v.dislikes;
+
+                if (vote === 'like') {
+                    if (v.userVote === 'like') {
+                        newLikes -= 1;
+                    } else if (v.userVote === 'dislike') {
+                        newDislikes -= 1;
+                        newLikes += 1;
+                    } else {
+                        newLikes += 1;
+                    }
+                } else if (vote === 'dislike') {
+                    if (v.userVote === 'dislike') {
+                        newDislikes -= 1;
+                    } else if (v.userVote === 'like') {
+                        newLikes -= 1;
+                        newDislikes += 1;
+                    } else {
+                        newDislikes += 1;
+                    }
+                }
+
+                return {
+                    ...v,
+                    likes: newLikes,
+                    dislikes: newDislikes,
+                    userVote: v.userVote === vote ? null : vote
+                };
+            }
+            return v;
+        }));
+        console.log(votes)
+    };
+
     const sdgColumns = [
         {
             title: 'Indicator',
@@ -46,8 +92,9 @@ function FileCard({ fileData }) {
             title: 'Approval Rating',
             key: 'approvalRating',
             render: (_, record) => {
-                const thumbsUp = Number(record.thumbsUp) || 0;
-                const thumbsDown = Number(record.thumbsDown) || 0;
+                const votesObj = votes.find((obj) => obj.indicator === record.indicator);
+                const thumbsUp = Number(votesObj.likes) || 0;
+                const thumbsDown = Number(votesObj.dislikes) || 0;
                 const total = thumbsUp + thumbsDown;
                 const percent = total === 0 ? 0 : (thumbsUp / total) * 100;
                 const trailColor = total === 0 ? '#d9d9d9' : '#f5222d';
@@ -61,7 +108,19 @@ function FileCard({ fileData }) {
                             format={() => ``}
                         />
                         <div style={{ textAlign: 'center', marginTop: '5px' }}>
-                            <span>{thumbsUp} 👍 / {thumbsDown} 👎</span>
+                                <span style={{color: "green"}}>{thumbsUp}                         
+                                    <FontAwesomeIcon 
+                                        icon={votesObj.userVote === 'like' ? likeBlue : likeWhite} 
+                                        onClick={() => handleVote(record.indicator, 'like')} 
+                                        style={{marginLeft: 5, marginRight: 5, cursor: "pointer"}}
+                                    /></span> 
+                                / 
+                                <span style={{color: "red"}}>{thumbsDown}                         
+                                    <FontAwesomeIcon 
+                                        icon={votesObj.userVote === 'dislike' ? dislikeBlue : dislikeWhite} 
+                                        onClick={() => handleVote(record.indicator, 'dislike')}
+                                        style={{marginLeft: 5, marginRight: 5, cursor: "pointer"}} 
+                                    /></span>
                         </div>
                     </div>
                 );
