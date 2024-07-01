@@ -5,7 +5,7 @@ import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP, SDG_INDICATOR_MAP } from '../uti
 import { nullTranslator, firstLetterUppercase } from '../utils/helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo, faSeedling } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faExclamationTriangle, faSeedling } from '@fortawesome/free-solid-svg-icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -19,10 +19,17 @@ function FileCard({ fileData }) {
     }
 
     const sdgFooter = () => {
-        return <span>More information about the indicators: <a href='https://unstats.un.org/sdgs/iaeg-sdgs/tier-classification' target='_blank' rel="noreferrer">IAEG-SDGs Tier Classification for Global SDG Indicators</a></span>
+        return <>
+            <div className="information-container">
+                The current SDG indicators have been mapped based on our subjective judgment.
+                <FontAwesomeIcon icon={faExclamationTriangle} style={{ marginLeft: "5px"}}/>
+            </div>
+            <span>More information about the indicators: <a href='https://unstats.un.org/sdgs/iaeg-sdgs/tier-classification' target='_blank' rel="noreferrer">IAEG-SDGs Tier Classification for Global SDG Indicators</a></span>
+
+        </>
     }
 
-    const sdfColumns = [
+    const sdgColumns = [
         {
             title: 'Indicator',
             dataIndex: 'indicator',
@@ -228,14 +235,14 @@ function FileCard({ fileData }) {
         {
             key: '5',
             label: <span style={{color: 'green' }}>SDG Indicators <FontAwesomeIcon icon={faSeedling} onClick={navigateToMetrics} style={{ marginLeft: "5px"}} /></span>,
-            hidden: !fileData.sdg_indicators_e,
+            hidden: !fileData.sdg_indicators_e || fileData.sdg_indicators_e.length < 1,
             children:
                 <>
                 <Button onClick={handleAddSDG} type="primary" style={{ marginBottom: 16 }}>
                     Add a new SDG indicator
                 </Button>
                 <Table
-                    columns={sdfColumns}
+                    columns={sdgColumns}
                     dataSource={data}
                     pagination={false}
                     sticky={true}
