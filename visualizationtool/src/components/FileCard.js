@@ -1,11 +1,14 @@
-import React from 'react';
-import { Tabs, Descriptions, Rate, Table } from 'antd';
+import React, { useState } from 'react';
+import { Tabs, Descriptions, Rate, Table, List, Modal, Button, Select, Input, Progress } from 'antd';
 import PropTypes from 'prop-types';
 import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP, SDG_INDICATOR_MAP } from '../utils/constants';
 import { nullTranslator, firstLetterUppercase } from '../utils/helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faSeedling } from '@fortawesome/free-solid-svg-icons';
+
+const { TextArea } = Input;
+const { Option } = Select;
 
 function FileCard({ fileData }) {
     const navigate = useNavigate();
@@ -32,17 +35,121 @@ function FileCard({ fileData }) {
             dataIndex: 'description',
             key: 'description',
         },
+        {
+            title: 'Approval Rating',
+            key: 'approvalRating',
+            render: (_, record) => {
+                const thumbsUp = Number(record.thumbsUp) || 0;
+                const thumbsDown = Number(record.thumbsDown) || 0;
+                const total = thumbsUp + thumbsDown;
+                const percent = total === 0 ? 0 : (thumbsUp / total) * 100;
+                const trailColor = total === 0 ? '#d9d9d9' : '#f5222d';
+    
+                return (
+                    <div>
+                        <Progress
+                            percent={percent}
+                            success={{ percent: percent }}
+                            trailColor={trailColor}
+                            format={() => ``}
+                        />
+                        <div style={{ textAlign: 'center', marginTop: '5px' }}>
+                            <span>{thumbsUp} 👍 / {thumbsDown} 👎</span>
+                        </div>
+                    </div>
+                );
+            }
+        }
       ];
 
     const sdgData = fileData.sdg_indicators_e?.map((sdg_indicator, index) => ({
-        key: index,
-        indicator: sdg_indicator,
-        description: SDG_INDICATOR_MAP[sdg_indicator],
-        })).sort((a,b) => {
-            if (a.indicator > b.indicator) return -1;
-            else if (a.indicator < b.indicator) return 1;
-            return 0;
-        });
+            key: index,
+            indicator: sdg_indicator.indicator,
+            description: SDG_INDICATOR_MAP[sdg_indicator.indicator],
+            comments: sdg_indicator.comments,
+            thumbsUp: sdg_indicator.thumbsUp || 0,
+            thumbsDown: sdg_indicator.thumbsDown || 0,
+        }));
+
+    const expandedRowRender = (record, onAddComment) => (
+        <div>
+                {record.comments.length > 0 && (
+                    <div key={record.indicator}>
+                        <List
+                            size="small"
+                            bordered
+                            dataSource={record.comments}
+                            renderItem={comment => 
+                                <List.Item>
+                                    <div>
+                                        <div style={{ fontSize: '16px' }}>{comment.comment}</div>
+                                        <div style={{ fontSize: '12px', color: 'gray' }}>- {comment.commentator}</div>
+                                    </div>
+                                </List.Item>
+                            }
+                        />
+                        <Button type="primary" style={{marginTop: 16}} onClick={() => onAddComment(record.indicator)}>Add Comment</Button>
+                    </div>
+                )}
+        </div>
+    );
+
+    const [data, setData] = useState(sdgData);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedIndicator, setSelectedIndicator] = useState('');
+    const [selectedComment, setSelectedComment] = useState('');
+    const [newSdg, setNewSdg] = useState(true);
+
+    const handleAddSDG = () => {
+        setNewSdg(true);
+        showModal();
+    }
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleSave = () => {
+        let newData = [];
+        if (data.find((record) => record.indicator === selectedIndicator)){
+            newData = data.map(record => {
+                if (record.indicator === selectedIndicator) {
+                    console.log(record)
+                    return {
+                        ...record,
+                        comments: [...record.comments, {
+                            comment: selectedComment,
+                            commentator: "Current User"
+                        }]
+                    };
+                }
+                return record;
+            });
+        } else{
+            newData = [...data, {
+                key: (data.length + 1).toString(),
+                indicator: selectedIndicator,
+                description: SDG_INDICATOR_MAP[selectedIndicator],
+                comments: [{comment: selectedComment, commentator: 'Current user'}]
+            }];
+        }
+        setData(newData);
+        setIsModalVisible(false);
+        setSelectedIndicator('');
+        setSelectedComment('');
+        setNewSdg(true);
+    };
+
+
+    const handleAddComment = (indicator) => {
+        setSelectedIndicator(indicator);
+        setNewSdg(false);
+        showModal();
+    };
 
     const items = [
         {
@@ -123,20 +230,58 @@ function FileCard({ fileData }) {
             label: <span style={{color: 'green' }}>SDG Indicators <FontAwesomeIcon icon={faSeedling} onClick={navigateToMetrics} style={{ marginLeft: "5px"}} /></span>,
             hidden: !fileData.sdg_indicators_e,
             children:
+                <>
+                <Button onClick={handleAddSDG} type="primary" style={{ marginBottom: 16 }}>
+                    Add a new SDG indicator
+                </Button>
                 <Table
                     columns={sdfColumns}
-                    dataSource={sdgData}
+                    dataSource={data}
                     pagination={false}
                     sticky={true}
                     bordered
                     footer={() => sdgFooter()}
+                    expandable={{
+                        expandedRowRender: record => expandedRowRender(record, handleAddComment),
+                        rowExpandable: record => record?.comments.length > 0,                    
+                    }}
                 />
+                </>
         }
     ].filter(i => !i.hidden)
 
     return (
         <div style={{ height: '580px', width: '100%' }}>
             <Tabs defaultActiveKey="1" items={items} style={{ height: '100%', overflow: 'auto' }}/>
+            <Modal
+                title="Add a new SDG indicator"
+                open={isModalVisible}
+                onOk={handleSave}
+                okText={newSdg ? 'Add a new SDG indicator' : 'Add comment' }
+                onCancel={handleCancel}
+            >
+                <Select
+                    placeholder="Select an SDG Indicator"
+                    style={{ width: '100%', marginBottom: 16 }}
+                    value={selectedIndicator}
+                    onChange={value => setSelectedIndicator(value)}
+                    disabled={!newSdg}
+                >
+                    <Option value="3.6.1">3.6.1</Option>
+                    <Option value="9.1.1">9.1.1</Option>
+                    <Option value="9.1.2">9.1.2</Option>
+                    <Option value="11.2.1">11.2.1</Option>
+                    <Option value="7.3.1">7.3.1</Option>
+                    <Option value="12.c.1">12.c.1</Option>
+                    <Option value="11.6.2">11.6.2</Option>
+                </Select>
+                <TextArea
+                    placeholder="Give explanation"
+                    rows={4}
+                    value={selectedComment}
+                    onChange={e => setSelectedComment(e.target.value)}
+                />
+            </Modal>
         </div>
     );
 }
