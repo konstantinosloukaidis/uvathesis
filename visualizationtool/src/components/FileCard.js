@@ -113,14 +113,12 @@ function FileCard({ fileData }) {
                                         icon={votesObj.userVote === 'like' ? likeBlue : likeWhite} 
                                         onClick={() => handleVote(record.indicator, 'like')} 
                                         style={{marginLeft: 5, marginRight: 5, cursor: "pointer"}}
-                                    /></span> 
-                                / 
-                                <span style={{color: "red"}}>{thumbsDown}                         
+                                    /></span>/<span style={{color: "red", marginLeft: 5}}>{thumbsDown}                         
                                     <FontAwesomeIcon 
                                         icon={votesObj.userVote === 'dislike' ? dislikeBlue : dislikeWhite} 
                                         onClick={() => handleVote(record.indicator, 'dislike')}
                                         style={{marginLeft: 5, marginRight: 5, cursor: "pointer"}} 
-                                    /></span>
+                                /></span>
                         </div>
                     </div>
                 );
