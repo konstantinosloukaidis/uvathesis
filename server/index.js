@@ -8,6 +8,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+const logOn = false; // Change for evaluation
 
 (async () => {
     const serverId = await serverIdentifier();
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
     connectToMongo().then(() => {
         app.listen(PORT, () => {
             console.log(`Server listening on ${PORT}`);
+            console.log(`Server identifier: ${serverId}`);
         });
     }).catch(err => {
         console.error("Failed to connect to MongoDB", err);
@@ -35,18 +37,20 @@ app.use(bodyParser.json());
     });
 
     app.post('/api/log', async (req, res) => {
-        const doc = {
-            ...req.body,
-            timestamp: new Date(req.body.timestamp),
-            serverId: serverId
+        if (logOn) {
+            const doc = {
+                ...req.body,
+                timestamp: new Date(req.body.timestamp),
+                serverId: serverId
+            }
+            const db = getDb();
+            await db.collection('logs').insertOne(doc);
         }
-        const db = getDb();
-        await db.collection('logs').insertOne(doc);
         
         try {
-        res.status(200).send('Log saved');
+            res.status(200).send('Log saved');
         } catch (error) {
-        res.status(500).send('Error saving log');
+            res.status(500).send('Error saving log');
         }
     });
 
