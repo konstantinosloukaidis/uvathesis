@@ -43,7 +43,7 @@ const AboutPage = () => {
                     </p>
                     <p>
                         You can also view the source of the project at my GitHub!
-                        <FontAwesomeIcon icon={faGithub} style={{ marginLeft: "5px", cursor: "pointer", color: "black", fontSize: "15px"}} onClick={() => window.open("https://github.com/DevOps-Project-UvA2024/DevOps-Project", "_blank")}/>
+                        <FontAwesomeIcon icon={faGithub} style={{ marginLeft: "5px", cursor: "pointer", color: "black", fontSize: "15px"}} onClick={() => window.open("https://github.com/KonstantinosLoukaidis", "_blank")}/>
                     </p>
                 </div>
             </Card>
