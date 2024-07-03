@@ -8,7 +8,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const logOn = false; // Change for evaluation
+const logOn = true; // Change for evaluation
 
 (async () => {
     const serverId = await serverIdentifier();

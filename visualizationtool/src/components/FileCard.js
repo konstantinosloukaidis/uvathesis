@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, Descriptions, Rate, Table, List, Modal, Button, Select, Input, Progress } from 'antd';
 import PropTypes from 'prop-types';
 import { UNIT_MAP, FREQUENCY_MAP, VERACITY_MAP, SDG_INDICATOR_MAP } from '../utils/constants';
@@ -35,7 +35,11 @@ function FileCard({ fileData }) {
         likes: sdg.thumbsUp || 0,
         dislikes: sdg.thumbsDown || 0,
         userVote: null
-    })) || []);
+    })));
+
+    useEffect(() => {
+        
+    });
     
     const handleVote = (indicator, vote) => {
         setVotes(prevVotes => prevVotes.map(v => {
@@ -72,7 +76,6 @@ function FileCard({ fileData }) {
             }
             return v;
         }));
-        console.log(votes)
     };
 
     const sdgColumns = [
@@ -110,12 +113,12 @@ function FileCard({ fileData }) {
                         <div style={{ textAlign: 'center', marginTop: '5px' }}>
                                 <span style={{color: "green"}}>{thumbsUp}                         
                                     <FontAwesomeIcon 
-                                        icon={votesObj.userVote === 'like' ? likeBlue : likeWhite} 
+                                        icon={votesObj?.userVote === 'like' ? likeBlue : likeWhite} 
                                         onClick={() => handleVote(record.indicator, 'like')} 
                                         style={{marginLeft: 5, marginRight: 5, cursor: "pointer"}}
                                     /></span>/<span style={{color: "red", marginLeft: 5}}>{thumbsDown}                         
                                     <FontAwesomeIcon 
-                                        icon={votesObj.userVote === 'dislike' ? dislikeBlue : dislikeWhite} 
+                                        icon={votesObj?.userVote === 'dislike' ? dislikeBlue : dislikeWhite} 
                                         onClick={() => handleVote(record.indicator, 'dislike')}
                                         style={{marginLeft: 5, marginRight: 5, cursor: "pointer"}} 
                                 /></span>
@@ -182,7 +185,6 @@ function FileCard({ fileData }) {
         if (data.find((record) => record.indicator === selectedIndicator)){
             newData = data.map(record => {
                 if (record.indicator === selectedIndicator) {
-                    console.log(record)
                     return {
                         ...record,
                         comments: [...record.comments, {
@@ -202,6 +204,12 @@ function FileCard({ fileData }) {
             }];
         }
         setData(newData);
+        setVotes(newData?.map(sdg => ({
+            indicator: sdg.indicator,
+            likes: sdg.thumbsUp || 0,
+            dislikes: sdg.thumbsDown || 0,
+            userVote: null
+        })));
         setIsModalVisible(false);
         setSelectedIndicator('');
         setSelectedComment('');
