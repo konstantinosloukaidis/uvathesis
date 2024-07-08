@@ -141,7 +141,7 @@ const PlotSwitcher = () => {
                                     placeholder="Filter by"
                                     style={{ width: '80%', marginBottom: '10px' }}
                                     onChange={handleGroupChange}
-                                    defaultValue={[ "coverage", "comfort", "trip frequency", "sustainability", "pricing", "equipment" ]}
+                                    value={groupKeys}
                                 >
                                     <Select.Option value="coverage">Coverage</Select.Option>
                                     <Select.Option value="trip frequency">Trip Frequency</Select.Option>
