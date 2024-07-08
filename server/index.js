@@ -8,7 +8,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const logOn = true; // Change for evaluation
+const logOn = false; // Change for evaluation
 
 (async () => {
     const serverId = await serverIdentifier();
@@ -17,6 +17,7 @@ const logOn = true; // Change for evaluation
         app.listen(PORT, () => {
             console.log(`Server listening on ${PORT}`);
             console.log(`Server identifier: ${serverId}`);
+            console.log(`Logger: ${logOn}`);
         });
     }).catch(err => {
         console.error("Failed to connect to MongoDB", err);
